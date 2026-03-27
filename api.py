@@ -1,12 +1,9 @@
 """
-Pneumonia X-Ray Classifier — Flask API
+Pneumonia X-Ray Classifier Flask API
 ---------------------------------------
 Exposes a single POST /predict endpoint.
 Expects a multipart form upload with key 'image'.
 Returns JSON: { prediction, confidence, probabilities }
-
-Usage:
-    python api.py
 
 Then open index.html in a browser (or serve it via any static server).
 Requires: pip install flask flask-cors ultralytics pillow
@@ -18,6 +15,26 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ultralytics import YOLO
 from PIL import Image
+from pytorch_grad_cam import GradCAM, EigenCAM
+from pytorch_grad_cam.utils.image import show_cam_on_image
+import torch
+import numpy as np
+from torchvision import transforms
+from pytorch_grad_cam import EigenCAM
+from pytorch_grad_cam.utils.image import show_cam_on_image
+import base64
+
+class YOLOClassifierWrapper(torch.nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+
+    def forward(self, x):
+        result = self.model(x)
+        # Ultralytics returns a tuple — unwrap it
+        if isinstance(result, tuple):
+            return result[0]
+        return result
 
 app = Flask(__name__)
 CORS(app)  # Allow requests from the static HTML frontend
@@ -36,6 +53,9 @@ if not os.path.exists(MODEL_PATH):
 
 model = YOLO(MODEL_PATH)
 print(f"✓ Model loaded from {MODEL_PATH}")
+
+# for i, layer in enumerate(model.model.model):
+#     print(i, layer.__class__.__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -93,13 +113,40 @@ def predict():
     normal_prob = float(probs.data[0]) * 100
     pneumonia_prob = float(probs.data[1]) * 100
 
+    # --- Grad-CAM ---
+    # Prepare input tensor
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+    ])
+
+    input_tensor = transform(image).unsqueeze(0)  # shape: [1, 3, 224, 224]
+
+    # Prepare normalised image for overlay (float32, 0-1)
+    rgb_img = np.array(image.resize((224, 224)), dtype=np.float32) / 255.0
+
+    # Target layer — index 8, last C2f before Classify
+    # after
+    wrapped = YOLOClassifierWrapper(model.model)
+    target_layer = [wrapped.model.model[8]]
+
+    with EigenCAM(model=wrapped, target_layers=target_layer) as cam:
+        grayscale_cam = cam(input_tensor=input_tensor)
+        heatmap = show_cam_on_image(rgb_img, grayscale_cam[0], use_rgb=True)
+
+    # Encode to base64
+    buffered = io.BytesIO()
+    Image.fromarray(heatmap).save(buffered, format="PNG")
+    heatmap_b64 = base64.b64encode(buffered.getvalue()).decode()
+
     return jsonify({
-        "prediction": prediction,
-        "confidence": round(confidence, 2),
-        "probabilities": {
-            "NORMAL": round(normal_prob, 2),
-            "PNEUMONIA": round(pneumonia_prob, 2),
-        }
+    "prediction": prediction,
+    "confidence": round(confidence, 2),
+    "probabilities": {
+        "NORMAL": round(normal_prob, 2),
+        "PNEUMONIA": round(pneumonia_prob, 2),
+    },
+    "heatmap": heatmap_b64
     })
 
 

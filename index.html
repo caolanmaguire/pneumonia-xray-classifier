@@ -471,6 +471,10 @@
         </div>
         <div class="prob-track"><div class="prob-fill normal" id="bar-normal"></div></div>
       </div>
+      <div id="heatmap-wrap" style="display:none;">
+        <p class="prob-name" style="margin-bottom: 8px;">Grad-CAM Heatmap</p>
+        <img id="heatmap-img" style="width:100%; border-radius: 8px; border: 1px solid var(--border);" />
+      </div>
       <div class="disclaimer">
         <strong>⚠ Research use only.</strong> This tool is not a medical device and has not been clinically validated. It must not be used to inform, replace, or supplement clinical diagnosis. Always consult a qualified radiologist or clinician.
       </div>
@@ -558,6 +562,9 @@
     const isPneumonia = data.prediction === 'PNEUMONIA';
     const cls = isPneumonia ? 'pneumonia' : 'normal';
 
+    document.getElementById('heatmap-img').src = `data:image/png;base64,${data.heatmap}`;
+    document.getElementById('heatmap-wrap').style.display = 'block';
+
     document.getElementById('result-badge').className = `result-badge ${cls}`;
     document.getElementById('result-badge').textContent = isPneumonia ? '🫁' : '✓';
     document.getElementById('result-prediction').className = `result-prediction ${cls}`;
@@ -587,6 +594,8 @@
     selectedFile = null;
     fileInput.value = '';
     previewImg.src = '';
+    document.getElementById('heatmap-img').src = '';
+    document.getElementById('heatmap-wrap').style.display = 'none';
     previewWrap.style.display = 'none';
     analyseBtn.style.display  = 'none';
     resultEl.style.display    = 'none';
