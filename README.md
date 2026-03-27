@@ -27,7 +27,7 @@
 
 ## About
 
-<!-- A short paragraph explaining the motivation and context for this project -->
+<img src="https://github.com/caolanmaguire/calsickofthis/blob/main/webpage.png?raw=true"/>
 
 ---
 
@@ -69,7 +69,9 @@ pip install -r requirements.txt
 python main.py
 
 # Run inference / demo mode
-python main.py
+python api.py
+
+# navigate to the index.html page in your browser
 ```
 
 <!-- Expand with any flags, options, or environment variables -->
@@ -81,7 +83,10 @@ python main.py
 ```
 pneumonia-xray-classifier/
 ├── main.py
+├── index.html
+├── api.py
 ├── README.md
+├── chest_xray/
 └── ...
 ```
 
