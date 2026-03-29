@@ -6,6 +6,8 @@ from ultralytics import YOLO
 import cv2
 from random import shuffle
 
+import logging
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -34,7 +36,7 @@ RUNS_DIR     = config["output"]["runs_dir"]
 def install_dataset():
     import kagglehub
     path = kagglehub.dataset_download("paultimothymooney/chest-xray-pneumonia")
-    print("Path to dataset files:", path)
+    logging.info(f"Dataset downloaded to: {path}")
 
 
 # ---------------------------------------------------------------------------
@@ -42,8 +44,11 @@ def install_dataset():
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
 
+    # Set up logging
+    logging.basicConfig(filename='application.log', level=logging.INFO)
+
     if os.path.exists(RUNS_DIR):
-        print("Trained model found. Skipping download and training.")
+        logging.log("Trained model found. Skipping download and training.")
 
         model = YOLO(MODEL_PATH)
 
@@ -84,6 +89,8 @@ if __name__ == "__main__":
             print(f"Prediction: {prediction} ({confidence:.1f}%) {'⚠ LOW CONFIDENCE' if low_conf else ''}")
             print(f"Current Accuracy: {accuracy_checker}/{len(all_tests)} ({(accuracy_checker / len(all_tests)) * 100:.2f}%)")
 
+            logging.info(f"Tested {filename}: True Label={label}, Prediction={prediction}, Confidence={confidence:.1f}%, {'LOW CONFIDENCE' if low_conf else 'OK'}") 
+
             if demo_mode == 'y':
                 cv2.imshow("prediction", img)
                 cv2.waitKey(0)
@@ -95,9 +102,11 @@ if __name__ == "__main__":
         print(f"Final Accuracy:     {accuracy_checker}/{len(all_tests)} ({(accuracy_checker / len(all_tests)) * 100:.2f}%)")
         print(f"Low Confidence:     {low_conf_count}/{len(all_tests)} predictions flagged below {CONF_THRESHOLD}%")
 
+        logging.info(f"Testing complete. Final Accuracy: {accuracy_checker}/{len(all_tests)} ({(accuracy_checker / len(all_tests)) * 100:.2f}%), Low Confidence: {low_conf_count}/{len(all_tests)}")
+
     else:
         install_dataset()
-        print("Training begins...")
+        logging.info("Training begins...")
 
         model = YOLO(BASE_MODEL)
 
