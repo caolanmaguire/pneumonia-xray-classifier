@@ -23,6 +23,11 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from torchvision import transforms
 
+# adding logging
+import logging
+
+logging.basicConfig(level=logging.INFO, filename='application.log', format='%(asctime)s - %(levelname)s - %(message)s')
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -51,6 +56,7 @@ if not os.path.exists(MODEL_PATH):
 
 model = YOLO(MODEL_PATH)
 print(f"✓ Model loaded from {MODEL_PATH}")
+logging.info(f"Model loaded from {MODEL_PATH}")
 
 
 # ---------------------------------------------------------------------------
@@ -162,4 +168,8 @@ if __name__ == "__main__":
     print("\n🩻 Pneumonia Classifier API")
     print(f"   POST http://{API_HOST}:{API_PORT}/predict")
     print(f"   GET  http://{API_HOST}:{API_PORT}/health\n")
+
+    logging.info("Starting Pneumonia Classifier API")
+    logging.info(f"API Config - Host: {API_HOST}, Port: {API_PORT}, Debug: {API_DEBUG}")
+    
     app.run(host=API_HOST, port=API_PORT, debug=API_DEBUG)

@@ -45,7 +45,29 @@
 
 ## Results
 
-<!-- Accuracy, confusion matrix, confidence scores, or any evaluation metrics from your training run -->
+### Kaggle Test Set
+
+              precision    recall  f1-score   support
+
+      NORMAL       0.96      0.42      0.59      4135
+   PNEUMONIA       0.32      0.93      0.48      1203
+
+    accuracy                           0.54      5338
+   macro avg       0.64      0.68      0.53      5338
+weighted avg       0.81      0.54      0.56      5338
+
+
+              precision    recall  f1-score   support
+
+      NORMAL       0.89      0.93      0.91      4135
+   PNEUMONIA       0.70      0.59      0.64      1203
+
+    accuracy                           0.85      5338
+   macro avg       0.79      0.76      0.77      5338
+weighted avg       0.84      0.85      0.85      5338
+
+![Confusion Matrix](results/train_kaggle/confusion_matrix.png)
+![ROC Curve](results/train_kaggle/roc_curve.png)
 
 ---
 

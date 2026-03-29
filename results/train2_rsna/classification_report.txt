@@ -1,0 +1,11 @@
+Model: runs\classify\train2\weights\best.pt
+Evaluated: 2026-03-29 21:20:44
+
+              precision    recall  f1-score   support
+
+      NORMAL       0.89      0.93      0.91      4135
+   PNEUMONIA       0.70      0.59      0.64      1203
+
+    accuracy                           0.85      5338
+   macro avg       0.79      0.76      0.77      5338
+weighted avg       0.84      0.85      0.85      5338

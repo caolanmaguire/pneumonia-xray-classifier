@@ -1,0 +1,21 @@
+{
+  "model_path": "runs\\classify\\train\\weights\\best.pt",
+  "evaluated": "2026-03-29 21:18:12",
+  "total_images": 5338,
+  "errors": 0,
+  "accuracy": 53.97,
+  "auc": 0.8036,
+  "precision": 0.321,
+  "recall": 0.9343,
+  "f1": 0.4778,
+  "confusion_matrix": [
+    [
+      1757,
+      2378
+    ],
+    [
+      79,
+      1124
+    ]
+  ]
+}
