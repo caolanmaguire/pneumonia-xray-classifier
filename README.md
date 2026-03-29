@@ -66,8 +66,11 @@ weighted avg       0.81      0.54      0.56      5338
    macro avg       0.79      0.76      0.77      5338
 weighted avg       0.84      0.85      0.85      5338
 
-![Confusion Matrix](results/train_kaggle/confusion_matrix.png)
-![ROC Curve](results/train_kaggle/roc_curve.png)
+![Confusion Matrix](results/train_rsna/confusion_matrix.png)
+![ROC Curve](results/train_rsna/roc_curve.png)
+
+![Confusion Matrix](results/train2_rsna/confusion_matrix.png)
+![ROC Curve](results/train2_rsna/roc_curve.png)
 
 ---
 
