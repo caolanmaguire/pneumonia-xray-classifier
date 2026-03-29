@@ -71,7 +71,7 @@ if __name__ == "__main__":
         model = YOLO("yolov8n-cls.pt")  # nano = small and fast
 
         model.train(
-            data="chest_xray/",  # points to your train/val folders
+            data="rsna_chest_xray/",  # points to your train/val folders
             epochs=10,
             imgsz=224
         )

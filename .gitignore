@@ -1,2 +1,4 @@
 /runs
 *.pt
+/new_dataset
+/rsna_chest_xray
