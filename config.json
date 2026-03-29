@@ -1,0 +1,50 @@
+{
+  "model": {
+    "weights_path": "runs/classify/train/weights/best.pt",
+    "image_size": 224,
+    "confidence_threshold": 70.0,
+    "target_layer_index": 8,
+    "classes": {
+      "0": "NORMAL",
+      "1": "PNEUMONIA"
+    }
+  },
+
+  "api": {
+    "host": "0.0.0.0",
+    "port": 5000,
+    "debug": false
+  },
+
+  "datasets": {
+    "kaggle": {
+      "train_dir": "chest_xray/train",
+      "val_dir": "chest_xray/val",
+      "test_dir": "chest_xray/test"
+    },
+    "rsna": {
+      "raw_dir": "new_dataset/stage_2_train_images",
+      "labels_csv": "new_dataset/stage_2_train_labels.csv",
+      "output_dir": "rsna_chest_xray",
+      "val_split": 0.2
+    },
+    "nih": {
+      "raw_dir": "nih_chest_xray/images",
+      "labels_csv": "nih_chest_xray/Data_Entry_2017.csv",
+      "output_dir": "nih_prepared",
+      "val_split": 0.2
+    }
+  },
+
+  "training": {
+    "epochs": 10,
+    "batch_size": 16,
+    "device": "cpu",
+    "base_model": "yolov8n-cls.pt"
+  },
+
+  "output": {
+    "runs_dir": "runs/",
+    "results_dir": "results/"
+  }
+}
