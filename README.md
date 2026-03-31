@@ -4,7 +4,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![YOLOv8](https://img.shields.io/badge/Model-YOLOv8-purple)
-![License](https://img.shields.io/badge/License-MIT-green)
+![License](https://img.shields.io/badge/License-GPL%20v3-blue)
 ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
 <img src="https://github.com/caolanmaguire/calsickofthis/blob/main/classifier-project.png?raw=true" alt="Project Banner" width="100%"/>
